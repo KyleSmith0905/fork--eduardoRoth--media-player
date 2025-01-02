@@ -198,7 +198,7 @@ public class MediaPlayer {
         try {
             MediaPlayerState playerState = MediaPlayerStateProvider.getState(playerId);
             ret.put("result", true);
-            ret.put("value", playerState.playerController.get().getRate());
+          ret.put("value", playerState.playerController.get().getRate());
         } catch (Error err) {
             ret.put("result", false);
             ret.put("message", "Player not found");
@@ -214,6 +214,37 @@ public class MediaPlayer {
             playerState.playerController.get().setRate(rate.floatValue());
             ret.put("result", true);
             ret.put("value", rate);
+        } catch (Error err) {
+            ret.put("result", false);
+            ret.put("message", "Player not found");
+        }
+        call.resolve(ret);
+    }
+
+    public void getPipState(PluginCall call, String playerId) {
+        JSObject ret = new JSObject();
+        ret.put("method", "getPipState");
+        try {
+            MediaPlayerState playerState = MediaPlayerStateProvider.getState(playerId);
+            ret.put("result", true);
+            MediaPlayerState.UI_STATE state = playerState.playerController.get().getPipState();
+            ret.put("value", state == MediaPlayerState.UI_STATE.INACTIVE ? "inactive" : "active");
+        } catch (Error err) {
+            ret.put("result", false);
+            ret.put("message", "Player not found");
+        }
+        call.resolve(ret);
+    }
+
+    public void setPipState(PluginCall call, String playerId, String state) {
+        JSObject ret = new JSObject();
+        ret.put("method", "setPipState");
+        try {
+            MediaPlayerState playerState = MediaPlayerStateProvider.getState(playerId);
+            MediaPlayerState.UI_STATE uiState = state.equals("active") ? MediaPlayerState.UI_STATE.WILL_ENTER : MediaPlayerState.UI_STATE.WILL_EXIT;
+            playerState.playerController.get().setPipState(uiState);
+            ret.put("result", true);
+            ret.put("value", state);
         } catch (Error err) {
             ret.put("result", false);
             ret.put("message", "Player not found");

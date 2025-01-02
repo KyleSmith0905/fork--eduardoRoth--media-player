@@ -15,6 +15,8 @@ export interface MediaPlayerPlugin {
   setVolume(options: MediaPlayerSetVolumeOptions): Promise<MediaPlayerResult<number>>;
   getRate(options: MediaPlayerIdOptions): Promise<MediaPlayerResult<number>>;
   setRate(options: MediaPlayerSetRateOptions): Promise<MediaPlayerResult<number>>;
+  getPipState(options: MediaPlayerIdOptions): Promise<MediaPlayerResult<'active' | 'inactive'>>;
+  setPipState(options: MediaPlayerSetPipStateOptions): Promise<MediaPlayerResult<'active' | 'inactive'>>;
   remove(options: MediaPlayerIdOptions): Promise<MediaPlayerResult<string>>;
   removeAll(): Promise<MediaPlayerResult<string[]>>;
 
@@ -85,6 +87,10 @@ export type MediaPlayerSetVolumeOptions = {
 export type MediaPlayerSetRateOptions = {
   playerId: string;
   rate: number;
+};
+export type MediaPlayerSetPipStateOptions = {
+  playerId: string;
+  state: 'active' | 'inactive';
 };
 export type MediaPlayerSetVisibilityBackgroundForPiPOptions = {
   playerId: string;

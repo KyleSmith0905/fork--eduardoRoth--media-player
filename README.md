@@ -35,6 +35,8 @@ npx cap sync
 * [`setVolume(...)`](#setvolume)
 * [`getRate(...)`](#getrate)
 * [`setRate(...)`](#setrate)
+* [`getPipState(...)`](#getpipstate)
+* [`setPipState(...)`](#setpipstate)
 * [`remove(...)`](#remove)
 * [`removeAll()`](#removeall)
 * [`addListener('MediaPlayer:Ready', ...)`](#addlistenermediaplayerready-)
@@ -266,6 +268,36 @@ setRate(options: MediaPlayerSetRateOptions) => Promise<MediaPlayerResult<number>
 --------------------
 
 
+### getPipState(...)
+
+```typescript
+getPipState(options: MediaPlayerIdOptions) => Promise<MediaPlayerResult<'active' | 'inactive'>>
+```
+
+| Param         | Type                                                                  |
+| ------------- | --------------------------------------------------------------------- |
+| **`options`** | <code><a href="#mediaplayeridoptions">MediaPlayerIdOptions</a></code> |
+
+**Returns:** <code>Promise&lt;<a href="#mediaplayerresult">MediaPlayerResult</a>&lt;'active' | 'inactive'&gt;&gt;</code>
+
+--------------------
+
+
+### setPipState(...)
+
+```typescript
+setPipState(options: MediaPlayerSetPipStateOptions) => Promise<MediaPlayerResult<'active' | 'inactive'>>
+```
+
+| Param         | Type                                                                                    |
+| ------------- | --------------------------------------------------------------------------------------- |
+| **`options`** | <code><a href="#mediaplayersetpipstateoptions">MediaPlayerSetPipStateOptions</a></code> |
+
+**Returns:** <code>Promise&lt;<a href="#mediaplayerresult">MediaPlayerResult</a>&lt;'active' | 'inactive'&gt;&gt;</code>
+
+--------------------
+
+
 ### remove(...)
 
 ```typescript
@@ -489,61 +521,66 @@ removeAllListeners(options: MediaPlayerIdOptions) => Promise<void>
 
 #### MediaPlayerResult
 
-<code>{ method: string; result: boolean; value?: ResultValueType; error?: <a href="#error">Error</a>; message?: string; }</code>
+<code>{ method: string; result: boolean; value?: ResultValueType; error?: <a href="#error">Error</a>; message?: string; }</code>
 
 
 #### MediaPlayerOptions
 
-<code>{ playerId: string; url: string; ios?: <a href="#mediaplayeriosoptions">MediaPlayerIosOptions</a>; android?: <a href="#mediaplayerandroidoptions">MediaPlayerAndroidOptions</a>; web?: <a href="#mediaplayerweboptions">MediaPlayerWebOptions</a>; extra?: <a href="#mediaplayerextraoptions">MediaPlayerExtraOptions</a>; }</code>
+<code>{ playerId: string; url: string; ios?: <a href="#mediaplayeriosoptions">MediaPlayerIosOptions</a>; android?: <a href="#mediaplayerandroidoptions">MediaPlayerAndroidOptions</a>; web?: <a href="#mediaplayerweboptions">MediaPlayerWebOptions</a>; extra?: <a href="#mediaplayerextraoptions">MediaPlayerExtraOptions</a>; }</code>
 
 
 #### MediaPlayerIosOptions
 
-<code>{ enableExternalPlayback?: boolean; enablePiP?: boolean; enableBackgroundPlay?: boolean; openInFullscreen?: boolean; automaticallyEnterPiP?: boolean; automaticallyHideBackgroundForPip?: boolean; fullscreenOnLandscape?: boolean; allowsVideoFrameAnalysis?: boolean; top?: number; left?: number; height?: number; width?: number; }</code>
+<code>{ enableExternalPlayback?: boolean; enablePiP?: boolean; enableBackgroundPlay?: boolean; openInFullscreen?: boolean; automaticallyEnterPiP?: boolean; automaticallyHideBackgroundForPip?: boolean; fullscreenOnLandscape?: boolean; allowsVideoFrameAnalysis?: boolean; top?: number; left?: number; height?: number; width?: number; }</code>
 
 
 #### MediaPlayerAndroidOptions
 
-<code>{ enableChromecast?: boolean; enablePiP?: boolean; enableBackgroundPlay?: boolean; openInFullscreen?: boolean; automaticallyEnterPiP?: boolean; fullscreenOnLandscape?: boolean; top?: number; start?: number; height?: number; width?: number; }</code>
+<code>{ enableChromecast?: boolean; enablePiP?: boolean; enableBackgroundPlay?: boolean; openInFullscreen?: boolean; automaticallyEnterPiP?: boolean; fullscreenOnLandscape?: boolean; top?: number; start?: number; height?: number; width?: number; }</code>
 
 
 #### MediaPlayerWebOptions
 
-<code>{ enableChromecast?: boolean; }</code>
+<code>{ enableChromecast?: boolean; }</code>
 
 
 #### MediaPlayerExtraOptions
 
-<code>{ title?: string; subtitle?: string; poster?: string; artist?: string; rate?: number; subtitles?: <a href="#mediaplayersubtitleoptions">MediaPlayerSubtitleOptions</a>; autoPlayWhenReady?: boolean; loopOnEnd?: boolean; showControls?: boolean; headers?: { [key: string]: string; }; }</code>
+<code>{ title?: string; subtitle?: string; poster?: string; artist?: string; rate?: number; subtitles?: <a href="#mediaplayersubtitleoptions">MediaPlayerSubtitleOptions</a>; autoPlayWhenReady?: boolean; loopOnEnd?: boolean; showControls?: boolean; headers?: { [key: string]: string; }; }</code>
 
 
 #### MediaPlayerSubtitleOptions
 
-<code>{ url: string; options?: { language?: string; foregroundColor?: string; backgroundColor?: string; fontSize?: number; }; }</code>
+<code>{ url: string; options?: { language?: string; foregroundColor?: string; backgroundColor?: string; fontSize?: number; }; }</code>
 
 
 #### MediaPlayerIdOptions
 
-<code>{ playerId: string; }</code>
+<code>{ playerId: string; }</code>
 
 
 #### MediaPlayerSetCurrentTimeOptions
 
-<code>{ playerId: string; time: number; }</code>
+<code>{ playerId: string; time: number; }</code>
 
 
 #### MediaPlayerSetVisibilityBackgroundForPiPOptions
 
-<code>{ playerId: string; isVisible: boolean; }</code>
+<code>{ playerId: string; isVisible: boolean; }</code>
 
 
 #### MediaPlayerSetVolumeOptions
 
-<code>{ playerId: string; volume: number; }</code>
+<code>{ playerId: string; volume: number; }</code>
 
 
 #### MediaPlayerSetRateOptions
 
-<code>{ playerId: string; rate: number; }</code>
+<code>{ playerId: string; rate: number; }</code>
+
+
+#### MediaPlayerSetPipStateOptions
+
+<code>{ playerId: string; state: 'active' | 'inactive'; }</code>
 
 </docgen-api>

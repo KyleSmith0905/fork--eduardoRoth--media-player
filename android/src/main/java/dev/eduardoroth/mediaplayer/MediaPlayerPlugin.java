@@ -7,6 +7,7 @@ import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import androidx.annotation.OptIn;
 import androidx.media3.common.util.UnstableApi;
@@ -170,7 +171,7 @@ public class MediaPlayerPlugin extends Plugin {
     @PluginMethod
     public void setCurrentTime(final PluginCall call) {
         String playerId = call.getString("playerId");
-        Long time = call.getLong("time");
+        Long time = Long.parseLong(String.format("%.0f", call.getDouble("time")) );
         if (playerId == null) {
             JSObject ret = new JSObject();
             ret.put("method", "setCurrentTime");
@@ -294,25 +295,62 @@ public class MediaPlayerPlugin extends Plugin {
 
     @PluginMethod
     public void setRate(final PluginCall call) {
+      String playerId = call.getString("playerId");
+      Double rate = call.getDouble("rate");
+      if (playerId == null) {
+        JSObject ret = new JSObject();
+        ret.put("method", "setRate");
+        ret.put("result", false);
+        ret.put("message", "Must provide a PlayerId");
+        call.resolve(ret);
+        return;
+      }
+      if (rate == null) {
+        JSObject ret = new JSObject();
+        ret.put("method", "setRate");
+        ret.put("result", false);
+        ret.put("message", "Must provide a rate");
+          call.resolve(ret);
+          return;
+        }
+        bridge.getActivity().runOnUiThread(() -> implementation.setRate(call, playerId, rate));
+    }
+
+    @PluginMethod
+    public void getPipState(final PluginCall call) {
         String playerId = call.getString("playerId");
-        Double rate = call.getDouble("rate");
         if (playerId == null) {
             JSObject ret = new JSObject();
-            ret.put("method", "setRate");
+            ret.put("method", "getPipState");
             ret.put("result", false);
             ret.put("message", "Must provide a PlayerId");
             call.resolve(ret);
             return;
         }
-        if (rate == null) {
+        bridge.getActivity().runOnUiThread(() -> implementation.getPipState(call, playerId));
+    }
+
+    @PluginMethod
+    public void setPipState(final PluginCall call) {
+        String playerId = call.getString("playerId");
+        String state = call.getString("state");
+        if (playerId == null) {
             JSObject ret = new JSObject();
-            ret.put("method", "setRate");
+            ret.put("method", "setPipState");
             ret.put("result", false);
-            ret.put("message", "Must provide a rate");
+            ret.put("message", "Must provide a PlayerId");
             call.resolve(ret);
             return;
         }
-        bridge.getActivity().runOnUiThread(() -> implementation.setRate(call, playerId, rate));
+        if (state == null) {
+            JSObject ret = new JSObject();
+            ret.put("method", "setPipState");
+            ret.put("result", false);
+            ret.put("message", "Must provide a state");
+            call.resolve(ret);
+            return;
+        }
+        bridge.getActivity().runOnUiThread(() -> implementation.setPipState(call, playerId, state));
     }
 
     @PluginMethod

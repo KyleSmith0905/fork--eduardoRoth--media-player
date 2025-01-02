@@ -8,6 +8,7 @@ import type {
   MediaPlayerPlugin,
   MediaPlayerResult,
   MediaPlayerSetCurrentTimeOptions,
+  MediaPlayerSetPipStateOptions,
   MediaPlayerSetRateOptions,
   MediaPlayerSetVisibilityBackgroundForPiPOptions,
   MediaPlayerSetVolumeOptions,
@@ -357,6 +358,45 @@ export class MediaPlayerWeb extends WebPlugin implements MediaPlayerPlugin {
       method: 'setRate',
       result: false,
       message: 'Player not found',
+    };
+  }
+
+  async getPipState(options: MediaPlayerIdOptions): Promise<MediaPlayerResult<'active' | 'inactive'>> {
+    const player = this._players.get(options.playerId);
+    
+    if (player) {
+      return {
+        method: 'getPipState',
+        result: true,
+        value: document.pictureInPictureElement?.id === options.playerId ? 'active' : 'inactive',
+      };
+    }
+
+    return {
+      method: 'getPipState',
+      result: false,
+      message: 'Player not found',
+    };
+  }
+
+  async setPipState(options: MediaPlayerSetPipStateOptions): Promise<MediaPlayerResult<'active' | 'inactive'>> {
+    const player = this._players.get(options.playerId);
+    
+    if (player) {
+      if (options.state === 'active') player.enterPictureInPicture();
+      else player.exitPictureInPicture();
+
+      return {
+        method: 'setRate',
+        result: true,
+        value: options.state,
+      };
+    }
+
+    return {
+      method: 'getPipState',
+      result: false,
+      message: `Method not implemented for Web ${options.playerId}`,
     };
   }
 

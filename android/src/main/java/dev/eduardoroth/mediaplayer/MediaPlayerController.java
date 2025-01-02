@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.media.MediaCodec;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.OptIn;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import dev.eduardoroth.mediaplayer.MediaPlayerNotificationCenter.NOTIFICATION_TYPE;
 import dev.eduardoroth.mediaplayer.models.ExtraOptions;
@@ -148,6 +150,14 @@ public class MediaPlayerController {
 
     public void setRate(float rate) {
         _activePlayer.setPlaybackSpeed(rate);
+    }
+
+    public UI_STATE getPipState() {
+      return _mediaPlayerState.pipState.get();
+    }
+
+    public void setPipState(UI_STATE state) {
+      _mediaPlayerState.pipState.set(state);
     }
 
     public void addMediaItem(MediaItem item) {
@@ -368,7 +378,10 @@ public class MediaPlayerController {
             }
         });
 
-        _castPlayerMediaSession = new MediaSession.Builder(_context, castPlayer).setPeriodicPositionUpdateEnabled(true).build();
+        MediaSession.Builder mediaSession = new MediaSession.Builder(_context, castPlayer);
+        mediaSession.setId(UUID.randomUUID().toString());
+
+        _castPlayerMediaSession = mediaSession.setPeriodicPositionUpdateEnabled(true).build();
 
         _castPlayerMediaSession.setPlayer(castPlayer);
 
